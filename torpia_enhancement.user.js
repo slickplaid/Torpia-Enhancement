@@ -239,21 +239,25 @@ function letsJQuery() {
 		$('area[title*=Bandit]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendBandit(slot, title);
 		});
 		$('area[title*=Archery]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendArchery(slot, title);
 		});
 		$('area[title*=Military]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendMilitary(slot, title);
 		});
 		$('area[title*=Pillory]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendPillory(slot, title);
 		});
 	} else if(ethic=='light'){
@@ -261,31 +265,37 @@ function letsJQuery() {
 		$('area[title*=Sawmill]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendSawmill(slot, title);		
 		});
 		$('area[title*=Iron foundry]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendIron(slot, title);		
 		});
 		$('area[title*=Gold foundry]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendGold(slot, title);		
 		});
 		$('area[title*=Mint]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendMint(slot, title);		
 		});
 		$('area[title*=Weapon smithy]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendWeapon(slot, title);		
 		});
 		$('area[title*=Marketplace]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			appendMarketplace(slot, title);		
 		});
 		
@@ -293,6 +303,7 @@ function letsJQuery() {
 	$('area[title*=Stables]').each(function(i){
 			var slot = $(this).attr('id').replace(/building/, '');
 			var title = $(this).attr('title').replace(/Under construction: /, '');
+			var title = $(this).attr('title').replace(/Level /, '');
 			if(ethic == 'dark'){
 				appendDarkStables(slot, title);
 			} else if(ethic == 'light') {
@@ -302,6 +313,7 @@ function letsJQuery() {
 	$('area[title*=Temple],area[title*=Barracks],area[title*=Hunting],area[title*=Warehouse],area[title*=Brotherhood],area[title*=Fire],area[title*=Settler],area[title*=Siege],area[title*=Farm],area[title*=Chapel],area[title*=Town watch],area[title*=Constructor guild],area[title*=Lumberhut],area[title*=Iron mine],area[title*=Gold mine],area[title*=Stone quarry]').each(function(i){
 		var slot = $(this).attr('id').replace(/building/, '');
 		var title = $(this).attr('title').replace(/Under construction: /, '');
+		var title = $(this).attr('title').replace(/Level /, '');
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
