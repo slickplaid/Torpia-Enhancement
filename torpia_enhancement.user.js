@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 1.5.1
+// version 1.5.2
 // 04-14-2009, updated 05-05-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,7 +21,7 @@
 // ==UserScript==
 // @name		Torpia Enhancement
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 1.5.1 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 1.5.2 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://torpia.com/village*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
@@ -221,7 +221,7 @@ $(function(){
 		'<table class="table slp" style="font-size:85%;padding:2px;">'+
 		'  <thead><tr><th colspan="3">&nbsp; &nbsp; &nbsp; Slickplaid\'s Torpia Enhancement, Ethic: '+ethic+'</th></tr></thead>'+
 		'  <tbody class="gen">'+
-		'    <tr><th>Name of Building</th><th>Action</th><th>Status</th></tr>');
+		'    <tr><th style="width: 200px;">Name of Building</th><th>Action</th><th style="width: 200px;">Status</th></tr>');
 	
 // loop through each area tag and get the building layout
 	if(ethic=='dark'){
@@ -321,11 +321,7 @@ $(function(){
 		objectID = $(this).attr('objectid');
 		slot = $(this).attr('slot');
 		amount = $(this).attr('amount');
-		if(ethic=='dark'){
-			queueType=2;
-		} else {
-			queueType=3;
-		}
+		queueType = $(this).attr('queuetype');
 		$('.slot'+slot).text('sending');
 		queryString = 'amount='+amount+'&fill=Fill+to+maximum&slot='+slot+'&objectid='+objectID+'&queuetype='+queueType;
 		$.ajax({
