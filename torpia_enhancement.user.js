@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 1.4
+// version 1.5.0
 // 04-14-2009, updated 05-05-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,7 +21,7 @@
 // ==UserScript==
 // @name		Torpia Enhancement
 // @namespace	http://hg.slickplaid.net/
-// @description	Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 1.5.0 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://torpia.com/village*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
@@ -79,7 +79,7 @@ $(function(){
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="7" queuetype="2" value="Fill Axemen" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="7" queuetype="2" value=" A " alt="Fill Axemen" title="Fill Axemen" name="fill"/> '+
 				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
@@ -89,8 +89,8 @@ $(function(){
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="1" queuetype="2" value="Fill Handbowmen" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="2" queuetype="2" value="Fill Crossbowmen" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="1" queuetype="2" value=" H " alt="Fill Handbowmen" title="Fill Handbowmen" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="2" queuetype="2" value=" C " alt="Fill Crossbowmen" title="Fill Crossbowmen" name="fill"/> '+
 				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
@@ -100,8 +100,8 @@ $(function(){
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="3" queuetype="2" value="Fill Swordsmen" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="4" queuetype="2" value="Fill Pikemen" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="3" queuetype="2" value=" S " alt="Fill Swordsmen" title="Fill Swordsmen" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="4" queuetype="2" value=" P " alt="Fill Pikemen" title="Fill Pikemen" name="fill"/> '+
 				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
@@ -111,8 +111,8 @@ $(function(){
 				$('.gen').append('<tr slot="'+slot+'">'+
 					'<th slot="'+slot+'">'+title+'</th>'+
 					'<td>'+
-					'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="5" queuetype="2" value="Fill Hobelars" name="fill"/> '+
-					'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="6" queuetype="2" value="Fill Knights" name="fill"/> '+
+					'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="5" queuetype="2" value=" H " alt="Fill Hobelars" title="Fill Hobelars" name="fill"/> '+
+					'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="6" queuetype="2" value=" K " alt="Fill Knights" title="Fill Knights" name="fill"/> '+
 					'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 					'</td>'+
 					'<td class="status slot'+slot+'"></td>'+
@@ -126,11 +126,11 @@ $(function(){
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="5" queuetype="3" value="Handbows" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="10" queuetype="3" value="Crossbows" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="9" queuetype="3" value="Shields" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="11" queuetype="3" value="Lances" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="4" queuetype="3" value="Swords" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="5" queuetype="3" value=" H " alt="Fill Handbows" title="Fill Handbows" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="10" queuetype="3" value=" C " alt="Fill Crossbows" title="Fill Crossbows" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="9" queuetype="3" value=" Shld " alt="Fill Shields" title="Fill Shields" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="11" queuetype="3" value=" L " alt="Fill Lances" title="Fill Lances" name="fill"/> '+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="4" queuetype="3" value=" Swd " alt="Fill Swords" title="Fill Swords" name="fill"/> '+
 				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
@@ -214,7 +214,7 @@ $(function(){
 		fontColor = '000';
 		divWidth = '150';
 	}
-	$('body').append('<div id="soverview" style="border: 2px solid rgb(255, 255, 255); padding: 7px 10px; background: rgb(51, 0, 51) none repeat scroll 0% 0%; opacity: 0.9; position: fixed; z-index: 9000; top: 140px; right: 10px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: rgb(255, 255, 255); text-decoration: none; text-align: left; font-family: Arial,Helvetica; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px;"></div>');
+	$('body').append('<div id="soverview" style="border: 2px solid rgb(255, 255, 255); padding: 7px 10px; background: rgb(51, 0, 51) none repeat scroll 0% 0%; opacity: 0.9; position: fixed; z-index: 9000; top: 140px; right: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: rgb(255, 255, 255); text-decoration: none; text-align: left; font-family: Arial,Helvetica; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px;"></div>');
 	
 	$('.main').append(
 		'<table class="table slp" style="font-size:85%;padding:2px;">'+
