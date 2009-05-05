@@ -90,7 +90,7 @@ function letsJQuery() {
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
 				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="7" queuetype="2" value="Fill Axemen" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -101,7 +101,7 @@ function letsJQuery() {
 				'<td>'+
 				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="1" queuetype="2" value="Fill Handbowmen" name="fill"/> '+
 				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="2" queuetype="2" value="Fill Crossbowmen" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -112,7 +112,7 @@ function letsJQuery() {
 				'<td>'+
 				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="3" queuetype="2" value="Fill Swordsmen" name="fill"/> '+
 				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="4" queuetype="2" value="Fill Pikemen" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -123,7 +123,7 @@ function letsJQuery() {
 					'<td>'+
 					'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="5" queuetype="2" value="Fill Hobelars" name="fill"/> '+
 					'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="6" queuetype="2" value="Fill Knights" name="fill"/> '+
-					'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+					'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 					'</td>'+
 					'<td class="status slot'+slot+'"></td>'+
 				'</tr>');
@@ -141,7 +141,7 @@ function letsJQuery() {
 				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="9" queuetype="3" value="Shields" name="fill"/> '+
 				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="11" queuetype="3" value="Lances" name="fill"/> '+
 				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="4" queuetype="3" value="Swords" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -150,8 +150,8 @@ function letsJQuery() {
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="1" queuetype="3" value="Fill to maximum" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="1" queuetype="3" value="Fill" name="fill"/> '+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -160,8 +160,8 @@ function letsJQuery() {
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="2" queuetype="3" value="Fill to maximum" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="2" queuetype="3" value="Fill" name="fill"/> '+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -170,8 +170,8 @@ function letsJQuery() {
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="3" queuetype="3" value="Fill to maximum" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="3" queuetype="3" value="Fill" name="fill"/> '+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -180,8 +180,8 @@ function letsJQuery() {
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="7" queuetype="3" value="Fill to maximum" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="7" queuetype="3" value="Fill" name="fill"/> '+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -190,8 +190,8 @@ function letsJQuery() {
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="8" queuetype="3" value="Fill to maximum" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="8" queuetype="3" value="Fill" name="fill"/> '+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
@@ -200,13 +200,22 @@ function letsJQuery() {
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="11" queuetype="2" value="Fill to maximum" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="11" queuetype="2" value="Fill" name="fill"/> '+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
 	}
-	
+	function appendPillory(slot, title){
+		$('.gen').append('<tr slot="'+slot+'">'+
+				'<th slot="'+slot+'">'+title+'</th>'+
+				'<td>'+
+				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="11" queuetype="2" value="Fill" name="fill" alt="Throw villagers on the pillory" title="Throw villagers on the pillory" /> '+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
+				'</td>'+
+				'<td class="status slot'+slot+'"></td>'+
+			'</tr>');
+	}
 	// append container divs
 	if(ethic=='dark'){
 		fontColor = 'fff';
@@ -242,7 +251,11 @@ function letsJQuery() {
 			var title = $(this).attr('title').replace(/Under construction: /, '');
 			appendMilitary(slot, title);
 		});
-		
+		$('area[title*=Pillory]').each(function(i){
+			var slot = $(this).attr('id').replace(/building/, '');
+			var title = $(this).attr('title').replace(/Under construction: /, '');
+			appendPillory(slot, title);
+		});
 	} else if(ethic=='light'){
 	// Good
 		$('area[title*=Sawmill]').each(function(i){
@@ -286,13 +299,13 @@ function letsJQuery() {
 				appendGoodStables(slot, title);
 			}
 	});	
-	$('area[title*=Temple],area[title*=Barracks],area[title*=Hunting],area[title*=Warehouse],area[title*=Brotherhood],area[title*=Pill],area[title*=Fire],area[title*=Settler],area[title*=Siege],area[title*=Farm],area[title*=Chapel],area[title*=Town watch],area[title*=Constructor guild],area[title*=Lumberhut],area[title*=Iron mine],area[title*=Gold mine],area[title*=Stone quarry]').each(function(i){
+	$('area[title*=Temple],area[title*=Barracks],area[title*=Hunting],area[title*=Warehouse],area[title*=Brotherhood],area[title*=Fire],area[title*=Settler],area[title*=Siege],area[title*=Farm],area[title*=Chapel],area[title*=Town watch],area[title*=Constructor guild],area[title*=Lumberhut],area[title*=Iron mine],area[title*=Gold mine],area[title*=Stone quarry]').each(function(i){
 		var slot = $(this).attr('id').replace(/building/, '');
 		var title = $(this).attr('title').replace(/Under construction: /, '');
 		$('.gen').append('<tr slot="'+slot+'">'+
 				'<th slot="'+slot+'">'+title+'</th>'+
 				'<td>'+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Upgrade Building" name="upgrade" />'+
+				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" alt="Upgrade Building" title="Upgrade Building" />'+
 				'</td>'+
 				'<td class="status slot'+slot+'"></td>'+
 			'</tr>');
