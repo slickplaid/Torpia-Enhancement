@@ -215,7 +215,8 @@ $(function(){
 		fontColor = '000';
 		divWidth = '150';
 	}
-	$('body').append('<div id="soverview" style="border: 2px solid rgb(150, 150, 150); padding: 7px 10px; background: rgb(51, 0, 51) none repeat scroll 0% 0%; opacity: 0.9; position: fixed; z-index: 9000; top: 140px; right: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: rgb(255, 255, 255); text-decoration: none; text-align: left; font-family: Arial,Helvetica; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px;"></div>');
+	$('body').append('<div id="soverview" style="border: 2px solid rgb(150, 150, 150); padding: 7px 10px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.9; position: fixed; z-index: 9000; top: 140px; right: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: rgb(255, 255, 255); text-decoration: none; text-align: left; font-family: Arial,Helvetica; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px;"></div>');
+	$('div#soverview').fadeTo(10000, 0.60);
 	
 	$('.main').append(
 		'<table class="table slp" style="font-size:85%;padding:2px;">'+
