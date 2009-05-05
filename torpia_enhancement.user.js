@@ -1,6 +1,6 @@
 // slickplaid's Torpia Enhancement
-// version 1.3
-// 04-14-2009
+// version 1.4
+// 04-14-2009, updated 05-05-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
 // http://www.gnu.org/copyleft/gpl.html
