@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 1.5.4
+// version 2.0.0 beta
 // 04-14-2009, updated 05-06-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,7 +21,7 @@
 // ==UserScript==
 // @name		Torpia Enhancement
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 1.5.4 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.0.0 beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://torpia.com/village*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
@@ -30,8 +30,37 @@ $(function(){
 	
 	// check for Evil or Good Ethic
 	ethic = $('body').attr('class');
+	ethicName = (ethic == 'light') ? 'good' : 'evil';
 		
 // init functions
+
+	function scanMap(slot, title) {
+		$('div#buildmenu').append('<div class="genmenu slot-'+slot+'" style="float: left; border: 1px solid #666; width: 294px; padding: 2px;" slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a> - <span id="slot-'+slot+'"></span></div>');
+		$('span#slot-'+slot).append('<div class="slpupgrade"><a href="#" class="slpslps" slot="'+slot+'"><img src="/images/village/light/upgrade.gif" alt="Upgrade" title="Upgrade" /></a></div>');
+		if(ethic == 'dark'){
+			var i=0, queueType=2;
+			if(title.indexOf('Bandit') != -1){
+				i=1;
+				var submitName=new Array('Axemen'), objectID=new Array(7);
+			}
+			if(title.indexOf('Archery') != -1){
+				i=2;
+				var submitName=new Array('Longbow','Crossbow'), objectID=new Array(1,2);
+			}
+			if(title.indexOf('Military') != -1){
+				i=2;
+				var submitName=new Array('Lance','Sword'), objectID=new Array(3,4);
+			}
+		}
+		for(x=0;x<i;x++){
+			$('span#slot-'+slot).prepend('<div class="slpupgrade slpweapon"><a href="#" class="qslot-'+slot+' '+submitName[x]+'" slot="'+slot+'" objectid="'+objectID[x]+'" queuetype="'+queueType+'"><img src="/images/village/light/'+submitName[x].toLowerCase()+'.gif" alt="'+submitName[x]+'" title="'+submitName[x]+'" /></a></div>');
+			console.log('for loop executed '+x+' times in '+title+'.');
+		}
+		
+			
+		
+	}
+	
 	// update resource for current town
 	function updateStock(ethic){		
 			$.ajax({
@@ -75,138 +104,7 @@ $(function(){
 			});
 
 	}
-	function appendBandit(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="7" queuetype="2" value=" Ax " title="Fill Axemen" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendArchery(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="1" queuetype="2" value=" Ha " title="Fill Handbowmen" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="2" queuetype="2" value=" Cr " title="Fill Crossbowmen" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendMilitary(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="3" queuetype="2" value=" Sw " title="Fill Swordsmen" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="4" queuetype="2" value=" Pi " title="Fill Pikemen" name="fill"/> '+
-				'<input class="seethrough submit" type="submit" value="Ninjas" title="Train Ninjas" />'+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendDarkStables(slot, title){
-				$('.gen').append('<tr slot="'+slot+'">'+
-					'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-					'<td>'+
-					'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="5" queuetype="2" value=" Ho " title="Fill Hobelars" name="fill"/> '+
-					'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="6" queuetype="2" value=" Kn " title="Fill Knights" name="fill"/> '+
-					'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-					'</td>'+
-					'<td class="status slot'+slot+'"></td>'+
-				'</tr>');
-		
-	}
-	function appendSeige(slot, title){
-		
-	}
-	function appendWeapon(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="5" queuetype="3" value=" Ha " title="Fill Handbows" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="10" queuetype="3" value=" Cr " title="Fill Crossbows" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="9" queuetype="3" value=" Shld " title="Fill Shields" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="11" queuetype="3" value=" La " title="Fill Lances" name="fill"/> '+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="4" queuetype="3" value=" Swd " title="Fill Swords" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendSawmill(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="1" queuetype="3" value="Fill" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendIron(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="2" queuetype="3" value="Fill" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendGold(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="3" queuetype="3" value="Fill" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendMint(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="7" queuetype="3" value="Fill" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendGoodStables(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="8" queuetype="3" value="Fill" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendMarketplace(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" objectid="11" queuetype="2" value="Fill" name="fill"/> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
-	function appendPillory(slot, title){
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitTroop" type="submit" slot="'+slot+'" amount="1" objectid="1" queuetype="4" value="Fill" name="fill" title="Throw villagers on the pillory" /> '+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
-	}
+
 	
 	// ajax function calls
 	function submitBuild(slot){
@@ -256,103 +154,15 @@ $(function(){
 	$('body').append('<div id="soverview" style="border: 2px solid rgb(150, 150, 150); padding: 7px 10px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.9; position: fixed; z-index: 9000; top: 140px; right: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: rgb(255, 255, 255); text-decoration: none; text-align: left; font-family: Arial,Helvetica; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px;"></div>');
 	$('div#soverview').fadeTo(10000, 0.60);
 	
-	$('.main').append(
-		'<table class="table slp" style="font-size:85%;padding:2px;">'+
-		'  <thead><tr><th colspan="3">&nbsp; &nbsp; &nbsp; Slickplaid\'s Torpia Enhancement, Ethic: '+ethic+'</th></tr></thead>'+
-		'  <tbody class="gen">'+
-		'    <tr><th style="width: 200px;">Name of Building</th><th>Action</th><th style="width: 200px;">Status</th></tr>');
-	
 // loop through each area tag and get the building layout
-	if(ethic=='dark'){
-		
-		// Evil
-		$('area[title*=Bandit]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendBandit(slot, title);
-		});
-		$('area[title*=Archery]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendArchery(slot, title);
-		});
-		$('area[title*=Military]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendMilitary(slot, title);
-		});
-		$('area[title*=Pillory]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendPillory(slot, title);
-		});
-	} else if(ethic=='light'){
-	// Good
-		$('area[title*=Sawmill]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendSawmill(slot, title);		
-		});
-		$('area[title*=Iron foundry]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendIron(slot, title);		
-		});
-		$('area[title*=Gold foundry]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendGold(slot, title);		
-		});
-		$('area[title*=Mint]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendMint(slot, title);		
-		});
-		$('area[title*=Weapon smithy]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendWeapon(slot, title);		
-		});
-		$('area[title*=Marketplace]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			appendMarketplace(slot, title);		
-		});
-		
-	}
-	$('area[title*=Stables]').each(function(i){
-			var slot = $(this).attr('id').replace(/building/, '');
-			var title = $(this).attr('title').replace(/Under construction: /, '');
-			var title = title.replace(/Level /, '');
-			if(ethic == 'dark'){
-				appendDarkStables(slot, title);
-			} else if(ethic == 'light') {
-				appendGoodStables(slot, title);
-			}
-	});	
-	$('area[title*=Temple],area[title*=Barracks],area[title*=Hunting],area[title*=Warehouse],area[title*=Brotherhood],area[title*=Fire],area[title*=Settler],area[title*=Siege],area[title*=Farm],area[title*=Chapel],area[title*=Town watch],area[title*=Constructor guild],area[title*=Lumberhut],area[title*=Iron mine],area[title*=Gold mine],area[title*=Stone quarry], area[title*=wall]').each(function(i){
-		var slot = $(this).attr('id').replace(/building/, '');
-		var title = $(this).attr('title').replace(/Under construction: /, '');
-		var title = title.replace(/Level /, '');
-		$('.gen').append('<tr slot="'+slot+'">'+
-				'<th slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></th>'+
-				'<td>'+
-				'<input class="submit submitBuild" type="submit" slot="'+slot+'" value="Up" name="upgrade" title="Upgrade Building" />'+
-				'</td>'+
-				'<td class="status slot'+slot+'"></td>'+
-			'</tr>');
+	$('area[title*=Bandit], area[title*=Archery], area[title*=Military], area[title*=Sawmill], area[title*=Iron foundry], area[title*=Gold foundry], area[title*=Mint], area[title*=Weapon smithy], area[title*=Marketplace], area[title*=Stables], area[title*=Temple], area[title*=Barracks], area[title*=Hunting], area[title*=Warehouse], area[title*=Brotherhood], area[title*=Pill], area[title*=Fire], area[title*=Settler], area[title*=Siege], area[title*=Farm], area[title*=Chapel], area[title*=Town watch], area[title*=Constructor guild], area[title*=Lumberhut], area[title*=Iron mine], area[title*=Gold mine], area[title*=Stone quarry], area[title*=wall]:eq(0)').each(function(i){
+		slot = $(this).attr('id').replace(/building/, '');
+		title = $(this).attr('title').replace(/Under construction: /, '');
+		title = title.replace(/Level /, '');
+		scanMap(slot, title);
 	});
-	$('.main').append('</tbody></table>');
+	
+	
 	$('.footerlinks').append('<img alt="|" src="/images/layout/'+ethic+'/divide_list.gif"/><a href="http://hg.slickplaid.net/" title="The Honor Guard Forums"><small>script by slickplaid</small></a>');
 	var i = 0;
 	// onClick
