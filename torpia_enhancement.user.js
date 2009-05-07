@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 1.5.4
+// version 1.5.5
 // 04-14-2009, updated 05-06-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,7 +21,7 @@
 // ==UserScript==
 // @name		Torpia Enhancement
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 1.5.4 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 1.5.5 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://torpia.com/village*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
@@ -39,6 +39,9 @@ $(function(){
 				url: '/village/getitems/',
 				async: true,
 				success: function(data){
+					res=$(data).find('ul.subheader');
+					$('ul.subheader').remove();
+					$('div.container').prepend(res);
 					data=data.split('Products');
 					data=data[1].replace(/<[a-zA-Z\/][^>]*>/g,'');
 					data=data.replace(/Beer barrels/,'Beer');
