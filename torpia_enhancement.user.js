@@ -40,8 +40,12 @@ $(function(){
 				async: true,
 				success: function(data){
 					res=$(data).find('ul.subheader');
-					$('ul.subheader').remove();
+					$('ul.subheader').remove(); // this breaks the ref to changing towns :(
 					$('div.container').prepend(res);
+					// re-add the reference to change towns since I broke it
+					$('select#focusvillage').change(function(e){
+						$('form.form').submit();
+					});
 					data=data.split('Products');
 					data=data[1].replace(/<[a-zA-Z\/][^>]*>/g,'');
 					data=data.replace(/Beer barrels/,'Beer');
