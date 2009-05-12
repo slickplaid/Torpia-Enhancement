@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 1.5.5
+// version 1.5.6
 // 04-14-2009, updated 05-06-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,16 +21,16 @@
 // ==UserScript==
 // @name		Torpia Enhancement
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 1.5.5 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
-// @include		http://torpia.com/village*
+// @description	Version 1.5.6 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @include		http://*.torpia.com/village*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
 $(function(){
 	
 	// check for Evil or Good Ethic
-	ethic = $('body').attr('class');
-		
+	var ethic = $('body').attr('class'),
+		version = '1.5.6';
 // init functions
 	// update resource for current town
 	function updateStock(ethic){		
