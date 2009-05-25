@@ -1,6 +1,6 @@
 // slickplaid's Torpia Enhancement
-// version 2.0.0 beta
-// 04-14-2009, updated 05-06-2009
+// version 2.0.0beta
+// 04-14-2009, updated 05-25-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
 // http://www.gnu.org/copyleft/gpl.html
@@ -21,167 +21,151 @@
 // ==UserScript==
 // @name		Torpia Enhancement
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.0.0 beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
-// @include		http://torpia.com/village*
+// @description	Version 2.0.0beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @include		http://*.torpia.com/village*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
+(function($){
+	$.fn.buildMenu = function(options) {
+			$.fn.buildMenu.defaults = {
+				amt: 0,
+				names: 'Error',
+				objectID: 0,
+				queueType: 0,
+				pill: false
+			};
+			var o = $.extend($.fn.buildMenu.defaults, options);
+			
+			return this.each(function () {
+				// create references	
+				var obj = $(this);
+				var slot = obj.attr('id').replace(/building/, '');
+				var title = obj.attr('title').replace(/Under construction: /, '').replace(/Level /, '');
+				var w = 50/(o.amt+1);
+				$('.gen').append('<div class="genmenu slot'+slot+'" slot="'+slot+'"><a class="gentitle" href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a></div>');
+				
+				for(i=0;i<o.amt;i++){
+					$('.slot'+slot).append('<a class="genfill" slot="'+slot+'" objectid="'+o.objectID[i]+'" queuetype="'+o.queueType[i]+'" style="width: '+w+'%">'+o.names[i]+'</a>');
+					if(o.pill === true) $('.slot'+slot+' a[slot='+slot+']').attr('amount','1');
+				}
+				
+				$('.slot'+slot).append('<a class="genupgrade" slot="'+slot+'" style="width: '+w+'%">&uarr;</a>');
+			});
+		};
+})(jQuery);
 
 $(function(){
-	
-	// check for Evil or Good Ethic
-	ethic = $('body').attr('class');
-	ethicName = (ethic == 'light') ? 'good' : 'evil';
+	try {
+		// check for Evil or Good Ethic
+		var ethic = $('body').attr('class');
+		var	v = '2.0.0beta';
 		
-// init functions
-
-	function scanMap(slot, title) {
-		$('div#buildmenu').append('<div class="genmenu slot-'+slot+'" style="float: left; border: 1px solid #666; width: 294px; padding: 2px;" slot="'+slot+'"><a href="/building/building/'+slot+'" alt="'+title+'" title="'+title+'">'+title+'</a> - <span id="slot-'+slot+'"></span></div>');
-		$('span#slot-'+slot).append('<div class="slpupgrade"><a href="#" class="slpslps" slot="'+slot+'"><img src="/images/village/light/upgrade.gif" alt="Upgrade" title="Upgrade" /></a></div>');
-		if(ethic == 'dark'){
-			var i=0, queueType=2;
-			if(title.indexOf('Bandit') != -1){
-				i=1;
-				var submitName=new Array('Axemen'), objectID=new Array(7);
-			}
-			if(title.indexOf('Archery') != -1){
-				i=2;
-				var submitName=new Array('Longbow','Crossbow'), objectID=new Array(1,2);
-			}
-			if(title.indexOf('Military') != -1){
-				i=2;
-				var submitName=new Array('Lance','Sword'), objectID=new Array(3,4);
-			}
-		}
-		for(x=0;x<i;x++){
-			$('span#slot-'+slot).prepend('<div class="slpupgrade slpweapon"><a href="#" class="qslot-'+slot+' '+submitName[x]+'" slot="'+slot+'" objectid="'+objectID[x]+'" queuetype="'+queueType+'"><img src="/images/village/light/'+submitName[x].toLowerCase()+'.gif" alt="'+submitName[x]+'" title="'+submitName[x]+'" /></a></div>');
-			console.log('for loop executed '+x+' times in '+title+'.');
-		}
-		
-			
-		
-	}
-	
-	// update resource for current town
-	function updateStock(ethic){		
+		// -------------------- ajax functions
+		function submitBuild(slot) {
+			$('.slot'+slot+' .gentitle').html('Sending...');
 			$.ajax({
 				type: 'POST',
-				url: '/village/getitems/',
+				url: '/building/upgrade/'+slot,
 				async: true,
-				success: function(data){
-					data=data.split('Products');
-					data=data[1].replace(/<[a-zA-Z\/][^>]*>/g,'');
-					data=data.replace(/Beer barrels/,'Beer');
-					data=data.split('&nbsp;',2);
-					data=data[1].split(/\s/g);
-					for(i=0; i<data.length;){
-						if(data[i]===''){
-							data.splice(i,1);
-						} else {
-							// $('#soverview').append('data['+i+'] => '+data[i]+'<br/>');
-							i++;
-						}
-					}
-					$('#soverview').html('');
-					if(ethic=='dark'){
-						colSpan=2;
-						ethicLabel='Evil';
-					}else if(ethic=='light'){
-						colSpan=3;
-						ethicLabel='Good';
-					}
-					$('#soverview').append('<table><tr><th colspan="'+colSpan+'">'+ethicLabel+'</th></tr>');
-					if(ethic=='dark'){
-						for(i=0; i<data.length; i+=2){
-							$('#soverview table').append('<tr><th>'+data[i]+'</th><td>'+data[i+1]+'</td></tr>');
-						}
-					} else if(ethic=='light'){
-						for(i=0; i<data.length; i+=3){
-							$('#soverview table').append('<tr><th>'+data[i]+'</th><td>'+data[i+1]+'</td><td>'+data[i+2]+'</td></tr>');
-						}
-					}
-					$('#soverview').append('</table>');
+				success: function(){
+					$('.slot'+slot+' .gentitle').html('<span class="status'+slot+'">Sent!</span>');
+					$('.status'+slot).fadeOut(2500, function () {
+						$('.slot'+slot+' .gentitle').html($('.slot'+slot+' .gentitle').attr('title'));
+					});
+					// updateStock(ethic);
+				},
+				error: function(){
+					slot = $(this).attr('slot');
+					$('.slot'+slot).text('Error');
+			}
+		});
+		}
+		function submitTroop(objectID, slot, amount, queueType){
+			$('.slot'+slot+' .gentitle').html('Sending...');
+			queryString = 'amount='+amount+'&fill=Fill+to+maximum&slot='+slot+'&objectid='+objectID+'&queuetype='+queueType;
+			$.ajax({
+				type: 'POST',
+				url: '/building/trainstuff/',
+				data: queryString,
+				async: true,
+				success: function(){
+					$('.slot'+slot+' .gentitle').html('<span class="status'+slot+'">Sent!</span>');
+					// updateStock(ethic);
+					$('.status'+slot+' .gentitle').fadeOut(2500);
+					$('.slot'+slot+' .gentitle').html($('.slot'+slot+' .gentitle').attr('title'));
+				},
+				error: function(){
+					$('.slot'+slot).text('Error');
 				}
 			});
-
-	}
-
-	
-	// ajax function calls
-	function submitBuild(slot){
-		$('.slot'+slot).text('sending');
-		$.ajax({
-			type: 'POST',
-			url: '/building/upgrade/'+slot,
-			async: true,
-			success: function(){
-				$('.slot'+slot).html('<span class="status'+slot+'">Sent!</span>');
-				updateStock(ethic);
-				$('.status'+slot).fadeOut(25000);
-			},
-			error: function(){
-				slot = $(this).attr('slot');
-				$('.slot'+slot).text('Error');
-			}
+		}
+		
+		// -------------------- css styling
+		$('head').append('<style type="text/css">'+
+			'.genmenu {'+
+				'float: left;'+
+				'border: 1px solid rgb(150, 150, 150);'+
+				'width: 292px;'+
+				'padding: 2px;'+
+				'margin: 2px 1px;'+
+				'-moz-border-radius: 4px;'+
+				'background: rgb(51, 51, 51);'+
+				'height: 20px;'+
+			'}'+
+			'.genmenu:hover { background: #111; }'+
+			'.genmenu a { display: block; float: left; text-align: center; height: 112%; text-decoration: none; }'+
+			'.genmenu a.gentitle { width: 50%; }'+
+			'.genmenu a.gentitle:hover { background: #CDEB8B; }'+
+			'.genmenu a.genupgrade, a.genfill { width: 50%; }'+
+			'.genmenu a.genupgrade:hover, a.genfill:hover { background: #C3D9FF; }'+
+			'.gen { overflow: hidden; }'+
+		'</style>');
+		
+		// -------------------- content creation
+		$('.main').append('<div class="gen"></div>');
+			/*
+			area[title*=Weapon smithy], 
+			area[title*=Marketplace], 
+			=== area[title*=Stables], =========
+			*/
+		if(ethic == 'dark'){
+			$('area[title*=Bandit]').buildMenu({ amt: 1, names: ['Axe'], objectID: [7], queueType: [2] });
+			$('area[title*=Archery]').buildMenu({ amt: 2, names: ['Ha','Cr'], objectID: [1,2], queueType: [2,2] });
+			$('area[title*=Military]').buildMenu({ amt: 2, names: ['Sw','Pi'], objectID: [3,4], queueType: [2,2] });
+			$('area[title*=Stables]').buildMenu({ amt: 2, names: ['Hob','Kni'], objectID: [5,6], queueType: [2,2] });
+			$('area[title*=Seige]').buildMenu({ amt: 0, names: ['Bat','Mang','Treb'], objectID: [7,7,7], queueType: [2,2,2] });
+			$('area[title*=Sawmill]').buildMenu({ amt: 1, names: ['Fill'], objectID: [1], queueType: [3] });
+			$('area[title*=Pill]').buildMenu({ amt: 1, names: ['Fill'], objectID: [11], queueType: [2], pill: true });
+			$('area[title*=Temple], area[title*=Barracks], area[title*=Hunting], area[title*=Warehouse], area[title*=Brotherhood], area[title*=Fire], area[title*=Settler], area[title*=Siege], area[title*=Lumberhut], area[title*=Stone quarry]').buildMenu();
+		} else {
+			$('area[title*=Sawmill]').buildMenu({ amt: 1, names: ['Fill'], objectID: [1], queueType: [3] });
+			$('area[title*=Iron foundry]').buildMenu({ amt: 1, names: ['Fill'], objectID: [2], queueType: [3] });
+			$('area[title*=Gold foundry]').buildMenu({ amt: 1, names: ['Fill'], objectID: [3], queueType: [3] });
+			$('area[title*=Mint]').buildMenu({ amt: 1, names: ['Fill'], objectID: [7], queueType: [3] });
+			$('area[title*=Stables]').buildMenu({ amt: 1, names: ['Fill'], objectID: [8], queueType: [3] });
+			$('area[title*=Temple], area[title*=Barracks], area[title*=Hunting], area[title*=Warehouse], area[title*=Brotherhood], area[title*=Fire], area[title*=Settler], area[title*=Siege], area[title*=Farm], area[title*=Chapel], area[title*=Town watch], area[title*=Constructor guild], area[title*=Lumberhut], area[title*=Iron mine], area[title*=Gold mine], area[title*=Stone quarry]').buildMenu();
+			$('area[title*=wall]').eq(0).buildMenu();
+		}
+		
+		// -------- Effects/Ajax -----------
+		$('.genmenu').hover(function(){
+			lot = $(this).attr('slot');
+			$('.tile_'+lot).css({'border' : '3px solid red'});
+		}, function(){
+			$('.tile_'+lot).css({'border' : 'none'});
 		});
-	}
-	function submitTroop(objectID, slot, amount, queueType){
-		$('.slot'+slot).text('sending');
-		queryString = 'amount='+amount+'&fill=Fill+to+maximum&slot='+slot+'&objectid='+objectID+'&queuetype='+queueType;
-		$.ajax({
-			type: 'POST',
-			url: '/building/trainstuff/',
-			data: queryString,
-			async: true,
-			success: function(){
-				$('.slot'+slot).html('<span class="status'+slot+'">Sent!</span>');
-				updateStock(ethic);
-				$('.status'+slot).fadeOut(25000);
-			},
-			error: function(){
-				$('.slot'+slot).text('Error');
-			}
+		
+		$('.genupgrade').css('cursor','pointer').click(function(){
+			slot = $(this).attr('slot');
+			submitBuild(slot);
 		});
-	}
-	
-	// append container divs
-	if(ethic=='dark'){
-		fontColor = 'fff';
-		divWidth = '85';
-	} else {
-		fontColor = '000';
-		divWidth = '150';
-	}
-	$('body').append('<div id="soverview" style="border: 2px solid rgb(150, 150, 150); padding: 7px 10px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.9; position: fixed; z-index: 9000; top: 140px; right: 20px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; color: rgb(255, 255, 255); text-decoration: none; text-align: left; font-family: Arial,Helvetica; font-style: normal; font-variant: normal; font-weight: normal; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px;"></div>');
-	$('div#soverview').fadeTo(10000, 0.60);
-	
-// loop through each area tag and get the building layout
-	$('area[title*=Bandit], area[title*=Archery], area[title*=Military], area[title*=Sawmill], area[title*=Iron foundry], area[title*=Gold foundry], area[title*=Mint], area[title*=Weapon smithy], area[title*=Marketplace], area[title*=Stables], area[title*=Temple], area[title*=Barracks], area[title*=Hunting], area[title*=Warehouse], area[title*=Brotherhood], area[title*=Pill], area[title*=Fire], area[title*=Settler], area[title*=Siege], area[title*=Farm], area[title*=Chapel], area[title*=Town watch], area[title*=Constructor guild], area[title*=Lumberhut], area[title*=Iron mine], area[title*=Gold mine], area[title*=Stone quarry], area[title*=wall]:eq(0)').each(function(i){
-		slot = $(this).attr('id').replace(/building/, '');
-		title = $(this).attr('title').replace(/Under construction: /, '');
-		title = title.replace(/Level /, '');
-		scanMap(slot, title);
-	});
-	
-	
-	$('.footerlinks').append('<img alt="|" src="/images/layout/'+ethic+'/divide_list.gif"/><a href="http://hg.slickplaid.net/" title="The Honor Guard Forums"><small>script by slickplaid</small></a>');
-	var i = 0;
-	// onClick
-	$('input.submitTroop').click(function(){
-		objectID = $(this).attr('objectid');
-		slot = $(this).attr('slot');
-		amount = $(this).attr('amount');
-		queueType = $(this).attr('queuetype');
-		submitTroop(objectID, slot, amount, queueType);
-	});
-	$('input.submitBuild').click(function(){
-		slot = $(this).attr('slot');
-		submitBuild(slot);
-	});
-	$('tbody tr').hover(function(){
-		lot = $(this).attr('slot');
-		$('.tile_'+lot).css({'border' : '3px solid red'});
-	}, function(){
-		$('.tile_'+lot).css({'border' : 'none'});
-    });
-    updateStock(ethic);
+		$('.genfill').css('cursor','pointer').click(function(){
+			objectID = $(this).attr('objectid');
+			slot = $(this).attr('slot');
+			amount = $(this).attr('amount');
+			queueType = $(this).attr('queuetype');
+			submitTroop(objectID, slot, amount, queueType);
+		});
+		
+	} catch(e) { console.debug(e); }
 });
