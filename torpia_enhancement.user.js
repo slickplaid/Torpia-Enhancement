@@ -72,7 +72,7 @@ $(function(){
 					$('.status'+slot).fadeOut(2500, function () {
 						$('.slot'+slot+' .gentitle').html($('.slot'+slot+' .gentitle').attr('title'));
 					});
-					// updateStock(ethic);
+					updateStock(ethic);
 				},
 				error: function(){
 					slot = $(this).attr('slot');
@@ -90,7 +90,7 @@ $(function(){
 				async: true,
 				success: function(){
 					$('.slot'+slot+' .gentitle').html('<span class="status'+slot+'">Sent!</span>');
-					// updateStock(ethic);
+					updateStock(ethic);
 					$('.status'+slot+' .gentitle').fadeOut(2500);
 					$('.slot'+slot+' .gentitle').html($('.slot'+slot+' .gentitle').attr('title'));
 				},
@@ -99,7 +99,47 @@ $(function(){
 				}
 			});
 		}
-		
+			// update resource for current town
+		function updateStock(ethic){		
+			$.ajax({
+				type: 'POST',
+				url: '/village/getitems/',
+				async: true,
+				success: function(data){
+					data=data.split('Products');
+					data=data[1].replace(/<[a-zA-Z\/][^>]*>/g,'');
+					data=data.replace(/Beer barrels/,'Beer');
+					data=data.split('&nbsp;',2);
+					data=data[1].split(/\s/g);
+					for(i=0; i<data.length;){
+						if(data[i]===''){
+							data.splice(i,1);
+						} else {
+							i++;
+						}
+					}
+					$('#soverview').html('');
+					if(ethic=='dark'){
+						colSpan=2;
+						ethicLabel='Evil';
+					}else if(ethic=='light'){
+						colSpan=3;
+						ethicLabel='Good';
+					}
+					$('#soverview').append('<table><tr><th colspan="'+colSpan+'">'+ethicLabel+'</th></tr>');
+					if(ethic=='dark'){
+						for(i=0; i<data.length; i+=2){
+							$('#soverview table').append('<tr><th>'+data[i]+'</th><td>'+data[i+1]+'</td></tr>');
+						}
+					} else if(ethic=='light'){
+						for(i=0; i<data.length; i+=3){
+							$('#soverview table').append('<tr><th>'+data[i]+'</th><td>'+data[i+1]+'</td><td>'+data[i+2]+'</td></tr>');
+						}
+					}
+					$('#soverview').append('</table>');
+				}
+			});
+		}
 		// -------------------- css styling
 		$('head').append('<style type="text/css">'+
 			'.genmenu {'+
@@ -147,6 +187,9 @@ $(function(){
 			$('area[title*=wall]').eq(0).buildMenu();
 		}
 		
+		$('body').append('<div id="soverview" style="border: 2px solid rgb(150, 150, 150); padding: 7px 10px; background: rgb(51, 51, 51); position: fixed; z-index: 9000; top: 140px; right: 20px; color: rgb(255, 255, 255); text-decoration: none; text-align: left; font-family: Arial,Helvetica; font-size: 13px; -moz-border-radius: 5px;"></div>');
+		$('div#soverview').fadeTo(10000, 0.60);
+	
 		// -------- Effects/Ajax -----------
 		$('.genmenu').hover(function(){
 			lot = $(this).attr('slot');
@@ -166,6 +209,6 @@ $(function(){
 			queueType = $(this).attr('queuetype');
 			submitTroop(objectID, slot, amount, queueType);
 		});
-		
+	updateStock(ethic);
 	} catch(e) { console.debug(e); }
 });
