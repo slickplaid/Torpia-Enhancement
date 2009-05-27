@@ -106,9 +106,16 @@ $(function(){
 				url: '/village/getitems/',
 				async: true,
 				success: function(data){
+					res=$(data).find('ul.subheader');
+					$('.subheader').remove(); // this breaks the ref to changing towns :(
+					$('.container').prepend(res);
+					// re-add the reference to change towns since I broke it
+					$('select#focusvillage').change(function(e){
+						$('.form').submit();
+					});
 					data=data.split('Products');
 					data=data[1].replace(/<[a-zA-Z\/][^>]*>/g,'');
-					data=data.replace(/Beer barrels/,'Beer');
+					data=data.replace(/Beer barrels/,'Beer').replace(/Percentage/,'[%]').replace(/Maximum storage per product/,'Max');
 					data=data.split('&nbsp;',2);
 					data=data[1].split(/\s/g);
 					for(i=0; i<data.length;){
@@ -133,7 +140,10 @@ $(function(){
 						}
 					} else if(ethic=='light'){
 						for(i=0; i<data.length; i+=3){
-							$('#soverview table').append('<tr><th>'+data[i]+'</th><td>'+data[i+1]+'</td><td>'+data[i+2]+'</td></tr>');
+							if (i<data.length-2)
+								$('#soverview table').append('<tr><th>'+data[i]+'</th><td>'+data[i+1]+'</td><td>'+data[i+2]+'</td></tr>');
+							else
+								$('#soverview table').append('<tr><th>'+data[i]+'</th><td>'+data[i+1]+'</td><td>n/a</td></tr>');
 						}
 					}
 					$('#soverview').append('</table>');
@@ -151,6 +161,7 @@ $(function(){
 				'-moz-border-radius: 4px;'+
 				'background: rgb(51, 51, 51);'+
 				'height: 20px;'+
+				'color: #fff;'+
 			'}'+
 			'.genmenu:hover { background: #111; }'+
 			'.genmenu a { display: block; float: left; text-align: center; height: 112%; text-decoration: none; }'+
