@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.1.3beta
+// version 2.1.4beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,11 +21,11 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.1.3beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.1.4beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
-var	v = '2.1.3beta';
+var	v = '2.1.4beta';
 // Localization
 var dict = {
 	err: 'Error.',
@@ -243,7 +243,7 @@ $(function(){
 				$('[itimeleft]').each(function(i){
 					var obj = $(this);
 					var itl = obj.attr('itimeleft');
-					var alt = obj.attr('alt');
+					var alt = obj.attr('sbuildingtitle');
 					var slot = obj.attr('id').replace(/building/, '');
 					alt=alt.replace(/Under construction: /,'');
 					$('.upgrades tr').append('<td class="cur_upgrades"><a slot="'+slot+'">'+i+' Upgrading '+alt+' - <span class="jClock" itimeleft="'+itl+'"></span></a></td>');
