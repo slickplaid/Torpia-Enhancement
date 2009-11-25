@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.1.2beta
+// version 2.1.3beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,11 +21,11 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.1.2beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.1.3beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
-var	v = '2.1.2beta';
+var	v = '2.1.3beta';
 // Localization
 var dict = {
 	err: 'Error.',
@@ -70,7 +70,7 @@ function getStats(){
 		type: 'GET',
 		url: '/statistics',
 		success: function(data){
-			var stats = [ $(data).find('.selected td:eq(0)').text(), $(data).find('.selected td:eq(1)').html(), $(data).find('.selected td:eq(2)').html(), $(data).find('.selected td:eq(3)').html(), $(data).find('.selected td:eq(4)').text(), $(data).find('.selected td:eq(5)').html(), $(data).find('.selected td:eq(6)').html(), $(data).find('.selected td:eq(7)').html() ];
+			var stats = [ $(data).find('.selected td:eq(0)').text(), $(data).find('.selected td:eq(1)').html(), $(data).find('.selected td:eq(2)').html(), $(data).find('.selected td:eq(3)').html(), $(data).find('.selected td:eq(4)').text(), $(data).find('.selected td:eq(5)').html(), $(data).find('.selected td:eq(6)').html().replace(/\s/g,''), $(data).find('.selected td:eq(7)').html() ];
 			$('.stats').html('<tr><th>Stats</th></tr><tr><th>Name: '+stats[1]+'</th><th>Rank: '+stats[0]+' ('+stats[6]+')</th><th>Brotherhood: '+stats[3]+'</th><th>Amulets: '+stats[4]+'</th><th>Towns: '+stats[5]+'</th>');
 		},
 		error: function(){
