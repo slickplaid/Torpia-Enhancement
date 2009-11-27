@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.1.5beta
+// version 2.2.0beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,15 +21,32 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.1.5beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.2.0beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
-var	v = '2.1.5beta';
+
+var	v = '2.2.0beta';
 // Localization
 var dict = {
-	err: 'Error.',
+	err: {
+		basic: 'Error.',
+		stats: 'Error loading stats.'
+	},
 	loading: 'Loading.'
+};
+var conf = {
+	clock: {
+		checkBuildStatus: function(ethic){
+			$('.jClock').each(function(){
+				if($(this).attr('itimeleft') == '0'){
+					console.log('ran!');
+					displayBuilding(ethic, true);
+					getStats(ethic);
+				}
+			});
+		}
+	}
 };
 var locale = window.location.hostname.split('.');
 var server = locale[0];
@@ -64,21 +81,61 @@ locale = locale[2];
 			});
 		};
 })(jQuery);
-
-function getStats(){
+// ---------------------------------- GET STATS -------------------------------------
+function getStats(ethic){
 	$.ajax({
 		type: 'GET',
 		url: '/statistics',
 		success: function(data){
-			var stats = [ $(data).find('.selected td:eq(0)').text(), $(data).find('.selected td:eq(1)').html(), $(data).find('.selected td:eq(2)').html(), $(data).find('.selected td:eq(3)').html(), $(data).find('.selected td:eq(4)').text(), $(data).find('.selected td:eq(5)').html(), $(data).find('.selected td:eq(6)').html().replace(/\s/g,''), $(data).find('.selected td:eq(7)').html() ];
-			$('.stats').html('<tr><th>Stats</th></tr><tr><th>Name: '+stats[1]+'</th><th>Rank: '+stats[0]+' ('+stats[6]+')</th><th>Brotherhood: '+stats[3]+'</th><th>Amulets: '+stats[4]+'</th><th>Towns: '+stats[5]+'</th>');
+			var stats = [ $(data).find('.selected td:eq(0)').text().replace(/\./g,','), $(data).find('.selected td:eq(1)').html(), $(data).find('.selected td:eq(2)').html(), $(data).find('.selected td:eq(3)').html(), $(data).find('.selected td:eq(4)').text().replace(/\./g,','), $(data).find('.selected td:eq(5)').html(), $(data).find('.selected td:eq(6)').html().replace(/\./g,','), $(data).find('.selected td:eq(7)').html() ];
+			user = (stats[3] != '-') ? '<span class="tes-name g">'+stats[1]+'@<span class="tes-brotherhood g">'+stats[3]+'</span></span>' : '<span class="tes-name g">'+stats[1]+'</span>';
+			rank = '<span class="tes-rank g">rank<span class="tes-rank_number g">'+stats[0]+'</span><span class="tes-rank_change g">'+stats[6]+'</span></span>';
+			stats = '<span class="tes-amulets g">'+stats[4]+'<img src="http://w1.torpia.com/images/statistics/amulet_rank_dark.gif" alt="Amulets" title="Amulets" />, </span><span class="tes-towns g">'+stats[5]+'<img title="Towns" alt="Towns" src="/images/layout/dark/menu/village.gif"/></span>';
+			$('#stats').html(user+stats+rank);
 		},
 		error: function(){
-			$('.stats').html(dict.err);
+			$('#stats').html(dict.err.stats);
 		}
 	});
 }
-
+// ---------------------------- display building --------------------------------------------------
+function displayBuilding(ethic, updateMap){
+	if($('[itimeleft]')){
+		if(updateMap === true){
+			$.ajax({
+				type: 'GET',
+				url: '/village',
+				success: function(data){
+					var map = $(data).find('.village');
+					$('.village').html('').html(map);
+					$('#upgrade').html('');
+					$('[itimeleft]').each(function(i){
+						var obj = $(this);
+						var itl = obj.attr('itimeleft');
+						var alt = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
+						var slot = obj.attr('id').replace(/building/, '');
+						var img = $('.tile_'+slot).attr('src');
+						alt = (!alt) ? obj.attr('alt') : alt;
+						alt=alt.replace(/Under construction: /,'');
+						$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'"></span></td><td><a href="/index.php/building/cancel/'+slot+'">cancel</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">Finish for 3 <img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+					});
+				}
+			});
+		} else {
+		$('#upgrade').html('');
+			$('[itimeleft]').each(function(i){
+				var obj = $(this);
+				var itl = obj.attr('itimeleft');
+				var alt = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
+				var slot = obj.attr('id').replace(/building/, '');
+				var img = $('.tile_'+slot).attr('src');
+				alt = (!alt) ? obj.attr('alt') : alt;
+				alt=alt.replace(/Under construction: /,'');
+				$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'"></span></td><td><a href="/index.php/building/cancel/'+slot+'">cancel</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">Finish for 3 <img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+			});
+		}
+	}
+}
 function genfo(server, ethic){
 	var sel = {
 		town : ($('#focusvillage option:selected').text() === '') ? $('.cust_villagesel').text() : $('#focusvillage option:selected').text(),
@@ -88,15 +145,20 @@ function genfo(server, ethic){
 		'<th class="la sb" colspan="2">'+sel.town+' (Coords go here!)</th></tr><tr><th class="la sb">Town ID</th><th>Stats</th>'+
 	'</tr><tr>'+
 		'<td class="ra">'+sel.tid+'</td><td class="sstat">'+dict.loading+'</td></tr>');
-	getStats();
+	getStats(ethic);
 }
 
 $(function(){
 	try {
 		// check for Evil or Good Ethic
 		var ethic = $('body').attr('class');
-		
-
+		// -------------------- timer functions --------------------------
+		// time@q1"
+		var tick = setInterval(function(){
+			for(var i in conf.clock){
+				conf.clock[i]();
+			}
+		},1000);
 		// -------------------- ajax functions
 		function submitBuild(slot) {
 			$('.slot'+slot+' .gentitle').html('Sending...');
@@ -109,11 +171,13 @@ $(function(){
 					$('.status'+slot).fadeOut(2500, function () {
 						$('.slot'+slot+' .gentitle').html($('.slot'+slot+' .gentitle').attr('title'));
 					});
-					map=$(data).find('.tile_'+slot);
+					map = $(data).find('.village');
+					$('.village').html('').html(map);
+					/* map=$(data).find('.tile_'+slot);
 					itimeleft=$(data).find('#building'+slot).attr('itimeleft');
 					$('tile_'+slot).remove();
 					$('.village').append(map);
-					$('#building'+slot).attr('itimeleft',itimeleft);
+					$('#building'+slot).attr('itimeleft',itimeleft); */
 					updateStock(ethic);
 				},
 				error: function(){
@@ -232,25 +296,12 @@ $(function(){
 					$('#soverview').append('<table>');
 					$('#soverview table').append(data);
 					$('#soverview table tr td:nth-child(2), #soverview table tr th').remove();
-					displayBuilding();
+					displayBuilding(ethic);
 				}
 			});
 
 		}
-		function displayBuilding(){
-			if($('[itimeleft]')){
-				$('.upgrades').html('').prepend('<tr><th>Upgrades</th></tr>');
-				$('[itimeleft]').each(function(i){
-					var obj = $(this);
-					var itl = obj.attr('itimeleft');
-					var alt = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
-					var slot = obj.attr('id').replace(/building/, '');
-					alt=alt.replace(/Under construction: /,'');
-					$('.upgrades tr').append('<td class="cur_upgrades"><a slot="'+slot+'">'+i+' Upgrading '+alt+' - <span class="jClock" itimeleft="'+itl+'"></span></a></td>');
-					//<div class="genmenu" slot="'+slot+'">'+i+' Upgrading '+alt+' - <span class="jClock" itimeleft="'+itl+'"></span></div>
-				});
-			}
-		}
+
 		function insertFillButton(){
 			if($('.genfill').length != 0){
 				$('.gen').append('<div class="genmenu filler" />');
@@ -293,10 +344,10 @@ $(function(){
 				$('area[title*=Temple], area[title*=Barracks], area[title*=Hunting], area[title*=Warehouse], area[title*=Brotherhood], area[title*=Fire], area[title*=Settler], area[title*=Siege], area[title*=Farm], area[title*=Chapel], area[title*=Town watch], area[title*=Constructor guild], area[title*=Lumberhut], area[title*=Iron mine], area[title*=Gold mine], area[title*=Stone quarry]').buildMenu();
 				$('area[title*=wall]').eq(0).buildMenu();
 			}
-			$('.gen').prepend('<div class="tes"></table>');
+			$('.gen').prepend('<div class="tes"></div>');
 			$('.tes')
-				.append('<table class="stats" />')
-				.append('<table class="upgrades" style="width: 100%;"><tr></tr></tbody>');
+				.append('<div id="stats" />')
+				.append('<table id="upgrade" />');
 		}
 		// -------- Effects/Ajax -----------
 		function applyEffects() {
@@ -340,7 +391,7 @@ $(function(){
 			'.genmenu a.gentitle:hover { background: #64992C; color: #F9FFEF; -moz-border-radius: 8px; }'+
 			'.genmenu a.genupgrade, a.genfill { width: 50%; }'+
 			'.genmenu a.genupgrade:hover, a.genfill:hover { background: #206CFF; color: #E0ECFF; -moz-border-radius: 8px; }'+
-			'.gen { overflow: hidden; }'+
+			'.gen { overflow: hidden; margin-top: 25px; }'+
 			'.notify_bar_fake { display: none; }'+
 			'.genfo { background: transparent; color: rgb(200, 200, 200);  margin: 2px 1px; width: 898px; padding: 0px; overflow: hidden; border-top: 1px solid rgb(130, 130, 130); border-left: 1px solid rgb(130, 130, 130); }'+
 			'.genfo a { font: normal 10px Verdana,arial,sans-serif; }'+
@@ -349,20 +400,28 @@ $(function(){
 			'.la { text-align: left; }'+
 			'.sb { font-weight: bold; }'+
 			'div#soverview { border: 2px solid rgb(150, 150, 150); padding: 5px 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.85; position: fixed; z-index: 9000; bottom: 10px; right: 10px; text-align: left; font-family: Arial,Helvetica; font-size: 13px; -moz-border-radius: 5px; color: #fff; }'+
-			'div#soverview img { height: 20px; width: 20px; }'+
+			'div#soverview img, .tes-amulets img, .tes-towns img, .tes-crown_finish a img { height: 15px; width: 15px; }'+
+			'.tes-upgrade img { height: 40px; width: 40px; }'+
 			'div#soverview .wtooltip { display: none; }'+
 			'ul#soverview { display: block; font-size: 0.7em; height: 33px; left: 50%; margin: 0 auto 0 -450px; position: fixed; top: 129px; width: 900px; z-index: 5; }'+
 			// tes table styling
-			'.tes { border-collapse: collapse; border: none;font: normal 11px helvetica, verdana, arial, sans-serif;background-image: url(http://torpia.slickplaid.net/bg_acuity.gif); background-repeat: repeat; border-spacing: 1px; width: 100%;}'+
-			'.tes td, th {  border: none; padding: .1em .3em; color: #6E6E6E;  }'+
-			'.tes thead th, tfoot th { font: bold 10px helvetica, verdana, arial, sans-serif; border: none; text-align: left; background: #000000;  color: #00FF0C;}'+
+			'.tes { font: normal 22px georgia, serif; background: transparent url("http://torpia.slickplaid.net/bg_acuity.gif") repeat top left; width: 100%; -moz-border-radius: 3px; margin: 0 0 10px 0; }'+
+			'#stats * { font: georgia,serif; }'+
+			'.tes .g { color: #aaa; position:relative; }'+
+			'.tes a { text-decoration: none; } .tes a:hover { color: green; }'+
+			'.tes .tes-rank_number { font: 50px georgia,serif; }'+
+			'.tes .tes-rank { position: absolute; top: 140px; right: 50px; }'+
+			'.tes .tes-name { position: absolute; top: 163px; left: 50px; }'+
+			
+			'.tes tr { width: 100% }'+
+			'.tes td, .tes th { border-collapse: collapse; border: 0px none transparent; padding: .1em .3em; color: #6E6E6E;  }'+
+			'.tes thead th, .tes tfoot th { font: bold 10px helvetica, verdana, arial, sans-serif; border: none; text-align: left; background: #000000;  color: #00FF0C;}'+
 			'.tes tbody td a { background: transparent;  text-decoration: none;  color: #9F9F9F; }'+
 			'.tes tbody td a:hover { background: transparent;  color: #00FF0C;  }'+
 			'.tes tbody th a { font: bold 11px helvetica, verdana, arial, sans-serif; background: transparent; text-decoration: none; font-weight:normal;  color: #9F9F9F; }'+
 			'.tes tbody th a:hover {  background: transparent;  color: #00FF0C;  }'+
-			'.tes tbody th, tbody td {  vertical-align: top;  text-align: left;  }'+
-			'.tes tbody tr:hover {  background: #0E0E0E;  }'+
-			'.tes tbody tr:hover th,tbody tr.odd:hover th {  background: #0E0E0E;  }'+
+			'.tes tbody th, .tes tbody td {  vertical-align: top;  text-align: left;  }'+
+			'.tes tbody tr:hover {  background: #02425A  }'+
 		'</style>');
 		if(ethic == 'light'){
 			$('head').append('<style type="text/css">'+
