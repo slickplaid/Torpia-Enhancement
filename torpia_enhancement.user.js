@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.3.0beta
+// version 2.3.1beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,12 +21,12 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.3.0beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.3.1beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
-var	v = '2.3.0beta';
+var	v = '2.3.1beta';
 // Localization
 var dict = {
 	err: {
@@ -109,13 +109,12 @@ function displayBuilding(ethic, updateMap){
 					var map = $(data).find('.village');
 					$('.village').html('').html(map);
 					$('#upgrade').html('');
-					$('[itimeleft]').each(function(i){
+					$('area[itimeleft]').each(function(i){
 						var obj = $(this);
 						var itl = obj.attr('itimeleft');
 						var alt = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
 						var slot = obj.attr('id').replace(/building/, '');
 						var img = $('.tile_'+slot).attr('src');
-						alt = (!alt) ? obj.attr('alt') : alt;
 						alt=alt.replace(/Under construction: /,'');
 						$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'"></span></td><td><a href="/index.php/building/cancel/'+slot+'">cancel</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">Finish for 3 <img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
 					});
