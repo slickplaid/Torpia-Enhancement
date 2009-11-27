@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.2.0beta
+// version 2.3.0beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,12 +21,12 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.2.0beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.3.0beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
-var	v = '2.2.0beta';
+var	v = '2.3.0beta';
 // Localization
 var dict = {
 	err: {
@@ -172,17 +172,24 @@ $(function(){
 						$('.slot'+slot+' .gentitle').html($('.slot'+slot+' .gentitle').attr('title'));
 					});
 					map = $(data).find('.village');
-					$('.village').html('').html(map);
-					/* map=$(data).find('.tile_'+slot);
-					itimeleft=$(data).find('#building'+slot).attr('itimeleft');
-					$('tile_'+slot).remove();
-					$('.village').append(map);
-					$('#building'+slot).attr('itimeleft',itimeleft); */
-					updateStock(ethic);
+					if(map.find('area').length != '0') {
+						$('.village').html('').html(map);
+						/* map=$(data).find('.tile_'+slot);
+						itimeleft=$(data).find('#building'+slot).attr('itimeleft');
+						$('tile_'+slot).remove();
+						$('.village').append(map);
+						$('#building'+slot).attr('itimeleft',itimeleft); */
+						updateStock(ethic);
+					} else {
+						$('.status'+slot).text('Failed');
+					}
 				},
 				error: function(){
 					slot = $(this).attr('slot');
-					$('.slot'+slot).text('Error');
+					$('.status'+slot).text('Error');
+					$('.status'+slot).fadeOut(2500, function () {
+						$('.slot'+slot+' .gentitle').html($('.slot'+slot+' .gentitle').attr('title'));
+					});
 			}
 		});
 		}
