@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.3.1beta
+// version 2.3.2beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,19 +21,23 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.3.1beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.3.2beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
-var	v = '2.3.1beta';
+var	v = '2.3.2beta';
 // Localization
 var dict = {
 	err: {
 		basic: 'Error.',
 		stats: 'Error loading stats.'
 	},
-	loading: 'Loading.'
+	loading: 'Loading.',
+	cancel: 'cancel',
+	finishCrowns: 'Finish for 3 ',
+	rank: 'rank',
+	updating: 'updating'
 };
 var conf = {
 	clock: {
@@ -116,7 +120,7 @@ function displayBuilding(ethic, updateMap){
 						var slot = obj.attr('id').replace(/building/, '');
 						var img = $('.tile_'+slot).attr('src');
 						alt=alt.replace(/Under construction: /,'');
-						$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'"></span></td><td><a href="/index.php/building/cancel/'+slot+'">cancel</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">Finish for 3 <img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+						$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
 					});
 				}
 			});
@@ -130,10 +134,21 @@ function displayBuilding(ethic, updateMap){
 				var img = $('.tile_'+slot).attr('src');
 				alt = (!alt) ? obj.attr('alt') : alt;
 				alt=alt.replace(/Under construction: /,'');
-				$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'"></span></td><td><a href="/index.php/building/cancel/'+slot+'">cancel</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">Finish for 3 <img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+				$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
 			});
 		}
 	}
+}
+function ga(){
+	var winProp = 'UA-532782-7';
+	var domainName = '.torpia.com';
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	$('body').append(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	try {
+		var pageTracker = _gat._getTracker(winProp);
+		pageTracker._setDomainName(domainName);
+		pageTracker._trackPageview();
+	} catch(e) { console.log(e); }
 }
 function genfo(server, ethic){
 	var sel = {
@@ -449,6 +464,8 @@ $(function(){
 				// displayBuilding();
 				insertFillButton();
 				applyEffects();
+				
+				ga();
 			}
 		}
 		
