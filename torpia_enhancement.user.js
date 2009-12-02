@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.3.2beta
+// version 2.3.3beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,12 +21,12 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.3.2beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.3.3beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
-var	v = '2.3.2beta';
+var	v = '2.3.3beta';
 // Localization
 var dict = {
 	err: {
@@ -132,7 +132,6 @@ function displayBuilding(ethic, updateMap){
 				var alt = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
 				var slot = obj.attr('id').replace(/building/, '');
 				var img = $('.tile_'+slot).attr('src');
-				alt = (!alt) ? obj.attr('alt') : alt;
 				alt=alt.replace(/Under construction: /,'');
 				$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
 			});
@@ -143,7 +142,7 @@ function ga(){
 	var winProp = 'UA-532782-7';
 	var domainName = '.torpia.com';
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-	$('body').append(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 	try {
 		var pageTracker = _gat._getTracker(winProp);
 		pageTracker._setDomainName(domainName);
@@ -217,7 +216,10 @@ $(function(){
 				postUrl = '/building/upgrade/'+slot;
 				qID = 'queuetype';
 			}
-			
+			if(slot === 'undefined'){
+				console.log('failed');
+				return false;
+			}
 			
 			// have to check for max amount
 			$.ajax({
@@ -326,7 +328,7 @@ $(function(){
 		function insertFillButton(){
 			if($('.genfill').length != 0){
 				$('.gen').append('<div class="genmenu filler" />');
-				$('.filler').append('<a class="genfill fillall" style="cursor: pointer;">Fill All</a>');
+				$('.filler').append('<a class="fillall" style="cursor: pointer;">Fill All</a>');
 			}
 			$('.fillall').click(function(){
 				$('.genfill').each(function(i){
@@ -336,7 +338,9 @@ $(function(){
 						amount = $(this).attr('amount');
 						queueType = $(this).attr('queuetype');
 						stype = $(this).attr('stype');
-						submitTroop(objectID, slot, amount, queueType, stype);
+						if(slot != 'undefined') {
+							submitTroop(objectID, slot, amount, queueType, stype);
+						}
 					}
 				});
 			});
@@ -411,7 +415,8 @@ $(function(){
 			'.genmenu a.gentitle { width: 50%; }'+
 			'.genmenu a.gentitle:hover { background: #64992C; color: #F9FFEF; -moz-border-radius: 8px; }'+
 			'.genmenu a.genupgrade, a.genfill { width: 50%; }'+
-			'.genmenu a.genupgrade:hover, a.genfill:hover { background: #206CFF; color: #E0ECFF; -moz-border-radius: 8px; }'+
+			'a.fillall { width: 100%; }'+
+			'.genmenu a.genupgrade:hover, a.genfill:hover, a.fillall:hover { background: #206CFF; color: #E0ECFF; -moz-border-radius: 8px; }'+
 			'.gen { overflow: hidden; margin-top: 25px; }'+
 			'.notify_bar_fake { display: none; }'+
 			'.genfo { background: transparent; color: rgb(200, 200, 200);  margin: 2px 1px; width: 898px; padding: 0px; overflow: hidden; border-top: 1px solid rgb(130, 130, 130); border-left: 1px solid rgb(130, 130, 130); }'+
@@ -465,7 +470,7 @@ $(function(){
 				insertFillButton();
 				applyEffects();
 				
-				ga();
+				//ga();
 			}
 		}
 		
