@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.3.3beta
+// version 2.4.0beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,12 +21,12 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.3.3beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.4.0beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
-var	v = '2.3.3beta';
+var	v = '2.4.0beta';
 // Localization
 var dict = {
 	err: {
@@ -50,7 +50,8 @@ var conf = {
 				}
 			});
 		}
-	}
+	},
+	res: 5
 };
 var locale = window.location.hostname.split('.');
 var server = locale[0];
@@ -293,7 +294,8 @@ $(function(){
 				}
 			});
 		}
-		function updateStock(ethic){		
+		function updateStock(ethic){
+		
 			$.ajax({
 				type: 'POST',
 				url: '/village/getitems/',
@@ -306,7 +308,19 @@ $(function(){
 					$('select#focusvillage').change(function(e){
 						$('form.form').submit();
 					});
-					data=$(data).find('table tbody').eq(2).html();
+					d=$(data).find('table tbody').eq(2).html();
+					// hover data, quick and dirty
+					r=$(data).find('table:eq(1)').html();
+					h = [];
+					h[0]=r;
+					h[1]=r;
+					h[2]=r;
+					h[3]=r;
+					h[4]=r;
+					h[5]=$(data).find('table:eq(0)').html();
+					h[6]=$(data).find('table').html();
+					main=$(data).find('.main table:eq(2)').html();
+					
 					$('#soverview').html('');
 					
 					if(ethic=='dark'){
@@ -317,8 +331,16 @@ $(function(){
 						ethicLabel='Good';
 					}
 					$('#soverview').append('<table>');
-					$('#soverview table').append(data);
+					$('#soverview table').append(d);
 					$('#soverview table tr td:nth-child(2), #soverview table tr th').remove();
+					
+					// add hover effects to resources
+					for(i=0;i<7;i++){
+						unsafeWindow.$('.resourcelink').eq(i).wTooltip({
+							content: h[i]
+						});
+					}
+					unsafeWindow.$('.mediumbar').wTooltip({ content: main });
 					displayBuilding(ethic);
 				}
 			});
@@ -456,13 +478,9 @@ $(function(){
 			'</style>');
 		}
 
-		
-
-		
-		
 		// onload
 		if(server == 'w1' || server == 'w2' || server == 'w3'){
-			if(window.location.href.indexOf('village') != -1 || window.location.href.indexOf('login') != -1) {
+			if(window.location.href.indexOf('village') != -1 || window.location.href.indexOf('login') != -1 || window.location.href.indexOf('trade') != -1) {
 				contentCreation();
 				updateStock(ethic);
 				genfo(server, ethic);
