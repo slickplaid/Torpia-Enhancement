@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.4.0beta
+// version 2.5.0beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,12 +21,12 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.4.0beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.5.0beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
-var	v = '2.4.0beta';
+var	v = '2.5.0beta';
 // Localization
 var dict = {
 	err: {
@@ -416,7 +416,8 @@ $(function(){
 				queueType = $(this).attr('queuetype');
 				stype = $(this).attr('stype');
 				submitTroop(objectID, slot, amount, queueType, stype);
-			});			
+			});
+			$('#soverview').hover(function(){ $('#soverview').fadeTo('fast', 0.1); },function(){ $('#soverview').fadeTo('fast', 0.85); });
 		}
 		// -------------------- css styling
 		$('head').append('<style type="text/css">'+
