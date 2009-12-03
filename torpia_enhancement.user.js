@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.5.2beta
+// version 2.5.3beta
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,12 +21,12 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.5.2beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.5.3beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
-var	v = '2.5.2beta';
+var	v = '2.5.3beta';
 // Localization
 var dict = {
 	err: {
@@ -42,7 +42,7 @@ var dict = {
 var conf = {
 	clock: {
 		checkBuildStatus: function(ethic){
-			$('.jClock').each(function(){
+			$('#upgrade .jClock').each(function(){
 				if($(this).attr('itimeleft') === '0'){
 					displayBuilding(ethic, true);
 					getStats(ethic);
@@ -51,7 +51,7 @@ var conf = {
 			});
 		}
 	},
-	res: 5
+	count: 0
 };
 var locale = window.location.hostname.split('.');
 var server = locale[0];
@@ -95,7 +95,7 @@ function getStats(ethic){
 			var stats = [ $(data).find('.selected td:eq(0)').text().replace(/\./g,','), $(data).find('.selected td:eq(1)').html(), $(data).find('.selected td:eq(2)').html(), $(data).find('.selected td:eq(3)').html(), $(data).find('.selected td:eq(4)').text().replace(/\./g,','), $(data).find('.selected td:eq(5)').html(), $(data).find('.selected td:eq(6)').html().replace(/\./g,','), $(data).find('.selected td:eq(7)').html() ];
 			user = (stats[3] != '-') ? '<span class="tes-name g">'+stats[1]+'@<span class="tes-brotherhood g">'+stats[3]+'</span></span>' : '<span class="tes-name g">'+stats[1]+'</span>';
 			rank = '<span class="tes-rank g">rank<span class="tes-rank_number g">'+stats[0]+'</span><span class="tes-rank_change g">'+stats[6]+'</span></span>';
-			stats = '<span class="tes-amulets g">'+stats[4]+'<img src="http://w1.torpia.com/images/statistics/amulet_rank_dark.gif" alt="Amulets" title="Amulets" />, </span><span class="tes-towns g">'+stats[5]+'<img title="Towns" alt="Towns" src="/images/layout/dark/menu/village.gif"/></span>';
+			stats = '<div class="tes-stats g"><span class="tes-amulets g">'+stats[4]+'<img src="http://w1.torpia.com/images/statistics/amulet_rank_dark.gif" alt="Amulets" title="Amulets" /></span></div>';
 			$('#stats').html(user+stats+rank);
 		},
 		error: function(){
@@ -117,25 +117,25 @@ function displayBuilding(ethic, updateMap){
 					$('area[itimeleft]').each(function(i){
 						var obj = $(this);
 						var itl = obj.attr('itimeleft');
-						var alt = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
-						console.log(alt);
+						var alt2 = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
+						console.log(alt2);
 						var slot = obj.attr('id').replace(/building/, '');
 						var img = $('.tile_'+slot).attr('src');
-						alt=alt.replace(/Under construction: /,'');
-						$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+						alt2=alt2.replace(/Under construction: /,'');
+						$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" class="tes-town_img" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt2+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
 					});
 				}
 			});
 		} else {
 		$('#upgrade').html('');
-			$('[itimeleft]').each(function(i){
+			$('area[itimeleft]').each(function(i){
 				var obj = $(this);
 				var itl = obj.attr('itimeleft');
-				var alt = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
+				var alt1 = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
 				var slot = obj.attr('id').replace(/building/, '');
 				var img = $('.tile_'+slot).attr('src');
-				alt=alt.replace(/Under construction: /,'');
-				$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+				alt1=alt1.replace(/Under construction: /,'');
+				$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" class="tes-town_img" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt1+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
 			});
 		}
 	}
@@ -189,11 +189,6 @@ $(function(){
 					map = $(data).find('.village');
 					if(map.find('area').length != '0') {
 						$('.village').html('').html(map);
-						/* map=$(data).find('.tile_'+slot);
-						itimeleft=$(data).find('#building'+slot).attr('itimeleft');
-						$('tile_'+slot).remove();
-						$('.village').append(map);
-						$('#building'+slot).attr('itimeleft',itimeleft); */
 						updateStock(ethic);
 					} else {
 						$('.status'+slot).text('Failed');
@@ -222,7 +217,7 @@ $(function(){
 				console.log('failed');
 				return false;
 			}
-			
+			conf.count++;
 			// have to check for max amount
 			$.ajax({
 				type: 'GET',
@@ -273,6 +268,8 @@ $(function(){
 					}
 					queryString = 'amount='+amount+'&slot='+slot+'&objectid='+objectID+'&'+qID+'='+queueType;
 					sendurl = (amount != 'pill') ? '/building/building/'+slot+'/produce' : '/building/building/'+slot+'/pillory';
+					
+					
 					$.ajax({
 						type: 'POST',
 						url: sendurl,
@@ -282,13 +279,18 @@ $(function(){
 							$('.slot'+slot+' .gentitle').fadeTo(2500, 1, function(){
 								$(this).fadeIn(10).html($('.slot'+slot+' .gentitle').attr('title'));
 							});
-							
-							updateStock(ethic);
+							conf.count--;
+							console.log('out: '+conf.count);
+							if(conf.count==0){
+								updateStock(ethic);
+							}
 						},
 						error: function(){
 							$('.slot'+slot).text('Unable to queue value. ('+maximum+')');
 						}
 					});
+					
+					
 				},
 				error: function(){
 					$('.slot'+slot).text('Error retrieving max amount.');
@@ -395,6 +397,7 @@ $(function(){
 			$('.gen').prepend('<div class="tes"></div>');
 			$('.tes')
 				.append('<div id="stats" />')
+				.append('<div id="infoholder" />')
 				.append('<table id="upgrade" />');
 		}
 		// -------- Effects/Ajax -----------
@@ -462,9 +465,12 @@ $(function(){
 			'.tes .tes-rank_number { font: 50px georgia,serif; }'+
 			'.tes .tes-rank { position: absolute; top: 140px; right: 50px; }'+
 			'.tes .tes-name { position: absolute; top: 163px; left: 50px; }'+
+			'.tes-stats { font: normal 14px georgia, serif; width: 100%; text-align: center; }'+
 			
-			'.tes tr { width: 100% }'+
-			'.tes td, .tes th { border-collapse: collapse; border: 0px none transparent; padding: .1em .3em; color: #6E6E6E;  }'+
+			
+			'.tes tr { width: 100%; height: 10px; }'+
+			'.tes td, .tes th { font: 14px geogia,serif; border-collapse: collapse; border: 0px none transparent; padding: .1em .3em; color: #6E6E6E;   }'+
+			'.tes img.tes-town_img { position: relative; top: -15px; }'+
 			'.tes thead th, .tes tfoot th { font: bold 10px helvetica, verdana, arial, sans-serif; border: none; text-align: left; background: #000000;  color: #00FF0C;}'+
 			'.tes tbody td a { background: transparent;  text-decoration: none;  color: #9F9F9F; }'+
 			'.tes tbody td a:hover { background: transparent;  color: #00FF0C;  }'+
