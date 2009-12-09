@@ -1,5 +1,5 @@
 // slickplaid's Torpia Enhancement
-// version 2.5.3beta
+// version 2.5.5
 // 04-14-2009, updated 10-26-2009
 // Copyright (c) 2009, slickplaid
 // Released under the GPL license
@@ -21,12 +21,12 @@
 // ==UserScript==
 // @name		Torpia Enhancement Beta
 // @namespace	http://hg.slickplaid.net/
-// @description	Version 2.5.3beta - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
+// @description	Version 2.5.5 - Ajaxy Goodness for the game Torpia. Once installed, just refresh the page and you're set. Visit http://hg.slickplaid.net/ or http://forum.torpia.com/showthread.php?t=761 for help.
 // @include		http://*.torpia.com/*
 // @require		http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 // ==/UserScript==
 
-var	v = '2.5.3beta';
+var	v = '2.5.5';
 // Localization
 var dict = {
 	err: {
@@ -117,12 +117,19 @@ function displayBuilding(ethic, updateMap){
 					$('area[itimeleft]').each(function(i){
 						var obj = $(this);
 						var itl = obj.attr('itimeleft');
+						var bl = obj.attr('ibuildinglevel');
 						var alt2 = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
 						console.log(alt2);
 						var slot = obj.attr('id').replace(/building/, '');
 						var img = $('.tile_'+slot).attr('src');
 						alt2=alt2.replace(/Under construction: /,'');
-						$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" class="tes-town_img" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt2+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+						$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" class="tes-town_img" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt2+' ('+bl+')</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+						$('.u'+i+'[slot]').hover(function(){
+							lot = $(this).attr('slot');
+							$('.tile_'+lot).css({'border' : '3px solid red', '-moz-border-radius' : '200px'});
+						}, function(){
+							$('.tile_'+lot).css({'border' : 'none'});
+						});
 					});
 				}
 			});
@@ -131,11 +138,18 @@ function displayBuilding(ethic, updateMap){
 			$('area[itimeleft]').each(function(i){
 				var obj = $(this);
 				var itl = obj.attr('itimeleft');
+				var bl = obj.attr('ibuildinglevel');
 				var alt1 = (obj.attr('sbuildingtitle')) ? obj.attr('sbuildingtitle') : obj.attr('alt');
 				var slot = obj.attr('id').replace(/building/, '');
 				var img = $('.tile_'+slot).attr('src');
 				alt1=alt1.replace(/Under construction: /,'');
-				$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" class="tes-town_img" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt1+'</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+				$('#upgrade').append('<tr class="tes-upgrade u'+i+'" slot="'+slot+'"><td>'+i+'</td><td><img src="'+img+'" class="tes-town_img" /></td><td><a slot="'+slot+'" href="/building/building/'+slot+'">'+alt1+' ('+bl+')</a></td><td class="tes-building_time"><span class="jClock" itimeleft="'+itl+'">'+dict.updating+'</span></td><td><a href="/index.php/building/cancel/'+slot+'">'+dict.cancel+'</a></td><td class="tes-crown_finish"><a title="Click to finish for 3 crowns" href="/index.php/building/finishpremiumnow/'+slot+'">'+dict.finishCrowns+'<img alt="crowns" src="/images/premium/premium_crown_dark.gif"/></a></td></tr>');
+				$('.u'+i+'[slot]').hover(function(){
+					lot = $(this).attr('slot');
+					$('.tile_'+lot).css({'border' : '3px solid red', '-moz-border-radius' : '200px'});
+				}, function(){
+					$('.tile_'+lot).css({'border' : 'none'});
+				});
 			});
 		}
 	}
@@ -454,7 +468,7 @@ $(function(){
 			'.sb { font-weight: bold; }'+
 			'div#soverview { border: 2px solid rgb(150, 150, 150); padding: 5px 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.85; position: fixed; z-index: 9000; bottom: 10px; right: 10px; text-align: left; font-family: Arial,Helvetica; font-size: 13px; -moz-border-radius: 5px; color: #fff; }'+
 			'div#soverview img, .tes-amulets img, .tes-towns img, .tes-crown_finish a img { height: 15px; width: 15px; }'+
-			'.tes-upgrade img { height: 40px; width: 40px; }'+
+			'.tes-upgrade img { height: 20px; width: 20px; }'+
 			'div#soverview .wtooltip { display: none; }'+
 			'ul#soverview { display: block; font-size: 0.7em; height: 33px; left: 50%; margin: 0 auto 0 -450px; position: fixed; top: 129px; width: 900px; z-index: 5; }'+
 			// tes table styling
@@ -470,7 +484,7 @@ $(function(){
 			
 			'.tes tr { width: 100%; height: 10px; }'+
 			'.tes td, .tes th { font: 14px geogia,serif; border-collapse: collapse; border: 0px none transparent; padding: .1em .3em; color: #6E6E6E;   }'+
-			'.tes img.tes-town_img { position: relative; top: -15px; }'+
+			'.tes img.tes-town_img { position: relative; top: -3px; }'+
 			'.tes thead th, .tes tfoot th { font: bold 10px helvetica, verdana, arial, sans-serif; border: none; text-align: left; background: #000000;  color: #00FF0C;}'+
 			'.tes tbody td a { background: transparent;  text-decoration: none;  color: #9F9F9F; }'+
 			'.tes tbody td a:hover { background: transparent;  color: #00FF0C;  }'+
@@ -499,16 +513,5 @@ $(function(){
 				//ga();
 			}
 		}
-		
-/* 			GM_xmlhttpRequest({
-				method: 'POST',
-				url: 'http://torpia.slickplaid.net/chat',
-				headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-				data: 'login=login&redirect=&userName=slickplaid&password=&channelName=Public&lang=en&submit=Login',
-				onload: function(data){ $('body').append(data.responseText); },
-				onerror: function(){ console.log('error'); }
-			}); */
-			
-		
 	} catch(e) { console.debug(e); }
 });
